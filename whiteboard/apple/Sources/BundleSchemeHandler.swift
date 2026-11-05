@@ -27,7 +27,13 @@ final class BundleSchemeHandler: NSObject, WKURLSchemeHandler {
         }
 
         let mime = UTType(filenameExtension: fileURL.pathExtension)?.preferredMIMEType ?? "application/octet-stream"
-        let headers = ["Content-Type": mime, "Content-Length": "\(data.count)"]
+        // WebKit fetches CSS masks (tldraw's icons) and fonts in CORS mode and treats a
+        // custom scheme as a separate origin, so without this header they silently fail.
+        let headers = [
+            "Content-Type": mime,
+            "Content-Length": "\(data.count)",
+            "Access-Control-Allow-Origin": "*",
+        ]
         task.didReceive(HTTPURLResponse(url: url, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!)
         task.didReceive(data)
         task.didFinish()

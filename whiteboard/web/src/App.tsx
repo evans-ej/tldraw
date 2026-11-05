@@ -1,12 +1,15 @@
 import { getAssetUrlsByImport } from '@tldraw/assets/imports.vite'
 import { useCallback } from 'react'
-import { Editor, Tldraw } from 'tldraw'
+import { Editor, TLComponents, Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
 import { HoldToInk } from './HoldToInk'
 import { postToNative } from './nativeBridge'
+import { PageNavigator } from './PageNavigator'
 import { PlayerVideoShapeUtil } from './PlayerVideoShapeUtil'
 
 const shapeUtils = [PlayerVideoShapeUtil]
+
+const components: TLComponents = { TopPanel: PageNavigator }
 
 // Bundle fonts, icons and translations so the app works offline instead of loading them from a CDN.
 // Keep the URLs as Vite resolved them. tldraw's default formatter only treats http(s) and data:
@@ -29,6 +32,7 @@ export default function App() {
 				persistenceKey="whiteboard"
 				licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
 				shapeUtils={shapeUtils}
+				components={components}
 				assetUrls={assetUrls}
 				maxAssetSize={MAX_ASSET_SIZE}
 				onMount={handleMount}

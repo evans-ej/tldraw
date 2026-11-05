@@ -18,31 +18,127 @@ body,
 .player-shape {
 	display: flex;
 	flex-direction: column;
-	border-radius: 8px;
 	overflow: hidden;
-	background: #111;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	background: #000;
 }
 
-.player-shape__bar {
-	height: 28px;
+.player-shape__title {
 	flex: none;
 	display: flex;
 	align-items: center;
-	padding: 0 10px;
-	font: 12px/1 system-ui, -apple-system, sans-serif;
+	overflow: hidden;
+	white-space: nowrap;
+	font-family: system-ui, -apple-system, sans-serif;
 	color: #ddd;
 	background: #222;
-	cursor: grab;
 }
 
+/* The picture ignores the pointer so pens and the select tool act on the canvas, not the video. */
 .player-shape__video {
 	flex: 1;
 	min-height: 0;
 	width: 100%;
 	background: #000;
 	object-fit: contain;
+	pointer-events: none;
+}
+
+.player-shape__controls-slot {
+	flex: none;
+	position: relative;
 	pointer-events: all;
+	background: #1a1a1a;
+}
+
+.player-controls {
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform-origin: top left;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 0 12px;
+	font: 15px/1 system-ui, -apple-system, sans-serif;
+	color: white;
+}
+
+.player-controls__button {
+	flex: none;
+	min-width: 44px;
+	height: 40px;
+	padding: 0 10px;
+	border: none;
+	border-radius: 8px;
+	font: inherit;
+	color: white;
+	background: rgba(255, 255, 255, 0.12);
+	cursor: pointer;
+}
+
+.player-controls__button:hover {
+	background: rgba(255, 255, 255, 0.24);
+}
+
+.player-controls__play {
+	min-width: 56px;
+	font-size: 20px;
+}
+
+.player-controls__time {
+	flex: none;
+	font-variant-numeric: tabular-nums;
+	opacity: 0.85;
+}
+
+.player-controls__scrubber {
+	flex: 1;
+	min-width: 40px;
+	height: 24px;
+	accent-color: #4a90e2;
+	cursor: pointer;
+}
+
+.page-nav {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-top: 8px;
+	padding: 4px;
+	border-radius: 12px;
+	background: var(--tl-color-panel, white);
+	box-shadow: var(--tl-shadow-2, 0 2px 8px rgba(0, 0, 0, 0.15));
+	pointer-events: all;
+	font: 15px/1 system-ui, -apple-system, sans-serif;
+	color: var(--tl-color-text, #111);
+}
+
+.page-nav__button {
+	width: 44px;
+	height: 40px;
+	border: none;
+	border-radius: 8px;
+	font-size: 26px;
+	line-height: 1;
+	color: inherit;
+	background: transparent;
+	cursor: pointer;
+}
+
+.page-nav__button:hover:not(:disabled) {
+	background: var(--tl-color-muted-2, rgba(0, 0, 0, 0.06));
+}
+
+.page-nav__button:disabled {
+	opacity: 0.3;
+	cursor: default;
+}
+
+.page-nav__label {
+	min-width: 56px;
+	text-align: center;
+	font-variant-numeric: tabular-nums;
 }
 
 .ink-hint {

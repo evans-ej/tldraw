@@ -1,0 +1,60 @@
+html,
+body,
+#root {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+	overscroll-behavior: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.whiteboard {
+	position: fixed;
+	inset: 0;
+}
+
+.player-shape {
+	display: flex;
+	flex-direction: column;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #111;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.player-shape__bar {
+	height: 28px;
+	flex: none;
+	display: flex;
+	align-items: center;
+	padding: 0 10px;
+	font: 12px/1 system-ui, -apple-system, sans-serif;
+	color: #ddd;
+	background: #222;
+	cursor: grab;
+}
+
+.player-shape__video {
+	flex: 1;
+	min-height: 0;
+	width: 100%;
+	background: #000;
+	object-fit: contain;
+	pointer-events: all;
+}
+
+.ink-hint {
+	position: absolute;
+	left: 50%;
+	bottom: 72px;
+	transform: translateX(-50%);
+	padding: 6px 10px;
+	border-radius: 6px;
+	font: 12px/1.2 system-ui, -apple-system, sans-serif;
+	color: white;
+	background: rgba(0, 0, 0, 0.7);
+	pointer-events: none;
+	z-index: 1000;
+}

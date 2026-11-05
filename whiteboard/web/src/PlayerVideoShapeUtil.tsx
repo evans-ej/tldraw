@@ -13,7 +13,7 @@ import {
 
 // Screen-pixel sizes; divided by the zoom level so the bars stay usable when zoomed out.
 const TITLE_HEIGHT = 24
-const CONTROLS_HEIGHT = 56
+const CONTROLS_HEIGHT = 44
 
 // Replaces tldraw's built-in video shape (same type, so drops and pastes still create it).
 // Differences: sound on, a large controls strip below the picture instead of the browser's
@@ -93,9 +93,10 @@ function PlayerVideo({ shape }: { shape: TLVideoShape }) {
 		const video = videoRef.current
 		if (!video) return
 		setDuration(video.duration)
-		if (initialTime.current > 0 && initialTime.current < video.duration) {
-			video.currentTime = initialTime.current
-		}
+		// Safari leaves the picture black until something is decoded; seeking a hair past 0 makes
+		// it show the first frame, frozen, instead of a black box.
+		video.currentTime =
+			initialTime.current > 0 && initialTime.current < video.duration ? initialTime.current : 0.001
 	}, [])
 
 	const handleTimeUpdate = useCallback(() => {
@@ -143,7 +144,7 @@ function PlayerVideo({ shape }: { shape: TLVideoShape }) {
 					className="player-shape__video"
 					src={url}
 					playsInline
-					preload="metadata"
+					preload="auto"
 					onLoadedMetadata={handleLoadedMetadata}
 					onTimeUpdate={handleTimeUpdate}
 					onPlay={() => setPlaying(true)}

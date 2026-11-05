@@ -58,19 +58,19 @@ body,
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	padding: 0 12px;
-	font: 15px/1 system-ui, -apple-system, sans-serif;
+	gap: 8px;
+	padding: 0 10px;
+	font: 13px/1 system-ui, -apple-system, sans-serif;
 	color: white;
 }
 
 .player-controls__button {
 	flex: none;
-	min-width: 44px;
-	height: 40px;
-	padding: 0 10px;
+	min-width: 36px;
+	height: 32px;
+	padding: 0 8px;
 	border: none;
-	border-radius: 8px;
+	border-radius: 6px;
 	font: inherit;
 	color: white;
 	background: rgba(255, 255, 255, 0.12);
@@ -82,8 +82,8 @@ body,
 }
 
 .player-controls__play {
-	min-width: 56px;
-	font-size: 20px;
+	min-width: 44px;
+	font-size: 16px;
 }
 
 .player-controls__time {
@@ -95,7 +95,7 @@ body,
 .player-controls__scrubber {
 	flex: 1;
 	min-width: 40px;
-	height: 24px;
+	height: 20px;
 	accent-color: #4a90e2;
 	cursor: pointer;
 }

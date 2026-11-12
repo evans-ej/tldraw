@@ -8,6 +8,7 @@ import { postToNative } from './nativeBridge'
 import { PageNavigator } from './PageNavigator'
 import { PlayerVideoShapeUtil } from './PlayerVideoShapeUtil'
 import { CanvasOverlays } from './tools/CanvasOverlays'
+import { WhiteboardEraserTool } from './tools/EraserTool'
 import { registerHighlighter } from './tools/highlighter'
 import { LaserPointerTool, registerLaserColor } from './tools/LaserPointerTool'
 import { SpotlightTool } from './tools/SpotlightTool'
@@ -15,7 +16,7 @@ import { SPOTLIGHT_ICON_URL, uiOverrides, WhiteboardToolbar } from './tools/tool
 import { ToolAwareStylePanel } from './tools/ToolPanels'
 
 const shapeUtils = [PlayerVideoShapeUtil]
-const tools = [LaserPointerTool, SpotlightTool]
+const tools = [LaserPointerTool, SpotlightTool, WhiteboardEraserTool]
 
 const components: TLComponents = {
 	TopPanel: PageNavigator,

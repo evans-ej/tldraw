@@ -368,3 +368,25 @@ body,
 .tlui-video__toolbar {
 	display: none;
 }
+
+.tool-panel__note {
+	color: var(--tl-color-text-3, #888);
+	white-space: nowrap;
+}
+
+/* Two rings, dark inside light, so the circle shows on any background or video. */
+.size-cursor {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 2;
+	box-sizing: border-box;
+	border: 1.5px solid rgba(0, 0, 0, 0.75);
+	box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.85);
+}
+
+.size-cursor[data-tool='eraser'] {
+	background: rgba(255, 255, 255, 0.15);
+}

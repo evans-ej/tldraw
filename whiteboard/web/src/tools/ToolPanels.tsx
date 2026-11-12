@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useRef } from 'react'
 import { DefaultStylePanel, TLUiStylePanelProps, useEditor, useValue } from 'tldraw'
 import {
+	eraserSettings,
 	HIGHLIGHTER_COLORS,
 	highlighterSettings,
 	LASER_COLORS,
@@ -16,6 +17,7 @@ export function ToolAwareStylePanel(props: TLUiStylePanelProps) {
 	if (toolId === 'highlight') return <HighlighterPanel />
 	if (toolId === 'laser') return <LaserPanel />
 	if (toolId === 'spotlight') return <SpotlightPanel />
+	if (toolId === 'eraser') return <EraserPanel />
 	return <DefaultStylePanel {...props} />
 }
 
@@ -137,7 +139,7 @@ function HighlighterPanel() {
 				label="Size"
 				value={settings.size}
 				min={4}
-				max={80}
+				max={240}
 				format={(v) => `${v}px`}
 				onChange={(size) => highlighterSettings.update({ size })}
 			/>
@@ -180,6 +182,27 @@ function LaserPanel() {
 				format={(v) => `${(v / 1000).toFixed(1)}s`}
 				onChange={(trailMs) => laserSettings.update({ trailMs })}
 			/>
+		</Panel>
+	)
+}
+
+function EraserPanel() {
+	const settings = useValue('eraser settings', () => eraserSettings.get(), [])
+	return (
+		<Panel
+			title="Eraser"
+			hint="E. Rubs out pen, highlighter and shapes inside the circle. Videos and images are never erased; select and delete them instead."
+		>
+			<Slider
+				label="Size"
+				value={settings.size}
+				min={8}
+				max={240}
+				step={2}
+				format={(v) => `${v}px`}
+				onChange={(size) => eraserSettings.update({ size })}
+			/>
+			<span className="tool-panel__note">Skips videos and images</span>
 		</Panel>
 	)
 }

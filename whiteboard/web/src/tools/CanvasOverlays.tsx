@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Box, useEditor, useValue } from 'tldraw'
-import { laserSettings, spotlightSettings } from './settings'
+import { eraserSettings, highlighterSettings, laserSettings, spotlightSettings } from './settings'
 import { getSpotlightTargets, spotlightState } from './SpotlightTool'
 
 /** Room left around a spotlighted item, in screen pixels. */
@@ -12,6 +12,7 @@ export function CanvasOverlays() {
 		<>
 			<SpotlightOverlay />
 			<LaserDot />
+			<SizeCursor />
 		</>
 	)
 }
@@ -141,6 +142,45 @@ function LaserDot() {
 				transform: `translate(${dot.point.x - diameter / 2}px, ${dot.point.y - diameter / 2}px)`,
 				background: dot.color,
 				boxShadow: `0 0 ${diameter}px ${diameter / 2}px ${dot.color}88`,
+			}}
+		/>
+	)
+}
+
+/** A circle at the pointer showing how wide the eraser or highlighter reaches. */
+function SizeCursor() {
+	const editor = useEditor()
+	const onBoard = usePointerOnBoard()
+	const ring = useValue(
+		'size cursor',
+		() => {
+			const tool = editor.getCurrentToolId()
+			let diameter: number
+			if (tool === 'eraser') {
+				diameter = eraserSettings.get().size
+			} else if (tool === 'highlight') {
+				// Highlighter strokes have a fixed width on the page (unless dynamic size is on), so
+				// the ring grows and shrinks with the zoom like the ink does.
+				const zoom = editor.getZoomLevel()
+				const scale = editor.user.getIsDynamicResizeMode() ? 1 / zoom : 1
+				diameter = highlighterSettings.get().size * scale * zoom
+			} else {
+				return null
+			}
+			return { tool, diameter, point: editor.inputs.getCurrentScreenPoint() }
+		},
+		[editor]
+	)
+	if (!ring || !onBoard) return null
+	const d = Math.max(4, ring.diameter)
+	return (
+		<div
+			className="size-cursor"
+			data-tool={ring.tool}
+			style={{
+				width: d,
+				height: d,
+				transform: `translate(${ring.point.x - d / 2}px, ${ring.point.y - d / 2}px)`,
 			}}
 		/>
 	)

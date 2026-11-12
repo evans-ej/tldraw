@@ -7,6 +7,10 @@ A native Mac and iPad/iPhone whiteboard built on the tldraw SDK. The canvas is a
 - tldraw canvas with all default tools, saved automatically on the device.
 - **Video player shape**: drop an MP4, MOV or WebM onto the board. It plays with sound and always-visible controls. Drag it by its top bar.
 - **Hold Option to ink** (Mac): hold the Option key and move your finger on the trackpad to write, without pressing the trackpad down. Release Option to finish the stroke. Pressing another key while holding Option cancels the stroke, so Option shortcuts still work.
+- **Highlighter** (Shift+D): pick from ten highlighter colors, set opacity and a continuous size. It keeps its own settings, so it never changes the pen's color or size.
+- **Laser pointer** (K): a glowing dot follows the pointer; drag to draw a trail that fades. Pick its color, width and how long the trail lingers.
+- **Spotlight** (I): dims the board around what you're talking about. Click an item to spotlight it, Shift-click to add more, drag to light an area, click empty board or press Esc to clear. With nothing picked, a round torch follows the pointer. The spotlight stays on when you switch to the pen or laser, so you can write inside it.
+- Holding Option works with all three drawing tools: glide to ink, highlight or laser without pressing the trackpad.
 - **Apple Pencil** (iPad): real pressure and palm rejection come from tldraw.
 - Fonts, icons and translations are bundled, so nothing loads from the internet.
 
@@ -55,10 +59,24 @@ tldraw is free to use in development. `npm run build:app` makes a development bu
 | `web/src/App.tsx` | The tldraw canvas and its configuration |
 | `web/src/HoldToInk.tsx` | Hold Option to write without pressing the trackpad |
 | `web/src/PlayerVideoShapeUtil.tsx` | Video player shape |
+| `web/src/tools/` | Highlighter, laser pointer and spotlight (see below) |
 | `web/src/nativeBridge.ts` | Messages from the canvas to the Swift app |
 | `apple/project.yml` | XcodeGen project for the Mac and iOS targets |
 | `apple/Sources/WhiteboardView.swift` | The WebKit view, dev server fallback and message handler |
 | `apple/Sources/BundleSchemeHandler.swift` | Serves the bundled canvas at `whiteboard://app` |
+
+## How the presenting tools fit in
+
+Each tool uses the tldraw extension point that matches what it is, so none of them patch tldraw itself:
+
+- **Highlighter** is tldraw's own highlight tool and shape. A side effect (`tools/highlighter.ts`) gives each new stroke the color, opacity and size from the highlighter panel. Strokes are normal shapes: they save with the page, undo, and can be selected and restyled later.
+- **Laser pointer** (`tools/LaserPointerTool.ts`) replaces tldraw's laser tool under the same id, so the toolbar button and K shortcut still work. Its trail is a temporary scribble that never becomes part of the board, so it doesn't touch undo or saving. The trail color is set on the theme's laser color.
+- **Spotlight** (`tools/SpotlightTool.ts`) is a new tool. What's lit is kept in memory, not on the board, so it never changes your content or undo history. The dimmed layer (`tools/CanvasOverlays.tsx`) is drawn in front of the canvas and lets the pointer through.
+- `tools/ToolPanels.tsx` swaps tldraw's style panel for the active tool's own panel, and `tools/toolbar.tsx` puts the three tools next to the pen. Settings are remembered on the device (`tools/settings.ts`).
+
+To add another tool, follow the same pattern: a `StateNode` in `tools/`, an entry in `uiOverrides` and the toolbar, and a panel in `ToolPanels.tsx` if it has settings.
+
+On iPhone-sized screens tldraw shows its compact style menu instead of the side panel, so the tools work there with their saved settings but their panels don't appear yet.
 
 ## Next ideas
 

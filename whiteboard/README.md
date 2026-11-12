@@ -6,6 +6,8 @@ A native Mac and iPad/iPhone whiteboard built on the tldraw SDK. The canvas is a
 
 - tldraw canvas with all default tools, saved automatically on the device.
 - **Video player shape**: drop an MP4, MOV or WebM onto the board. It plays with sound and always-visible controls. Drag it by its top bar.
+- **Videos fit the screen**: a pasted or dropped video fills the window from edge to edge, between the top bar and the bottom toolbar, so it's ready to record. Press Shift+B to fit the selected video again, for example after resizing the window or zooming.
+- **Style strip**: colors, sizes and the tool settings sit in one row along the top edge, so they don't cover the board while screen recording.
 - **Hold Option to ink** (Mac): hold the Option key and move your finger on the trackpad to write, without pressing the trackpad down. Release Option to finish the stroke. Pressing another key while holding Option cancels the stroke, so Option shortcuts still work.
 - **Highlighter** (Shift+D): pick from ten highlighter colors, set opacity and a continuous size. It keeps its own settings, so it never changes the pen's color or size.
 - **Laser pointer** (K): a glowing dot follows the pointer; drag to draw a trail that fades. Pick its color, width and how long the trail lingers.

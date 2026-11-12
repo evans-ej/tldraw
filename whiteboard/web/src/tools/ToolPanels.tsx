@@ -19,7 +19,7 @@ export function ToolAwareStylePanel(props: TLUiStylePanelProps) {
 	return <DefaultStylePanel {...props} />
 }
 
-function Panel({ title, children }: { title: string; children: ReactNode }) {
+function Panel({ title, hint, children }: { title: string; hint: string; children: ReactNode }) {
 	const editor = useEditor()
 	const ref = useRef<HTMLDivElement>(null)
 	useEffect(() => {
@@ -32,7 +32,9 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
 	}, [editor])
 	return (
 		<div ref={ref} className="tlui-style-panel tlui-style-panel__wrapper tool-panel">
-			<div className="tool-panel__title">{title}</div>
+			<div className="tool-panel__title" title={hint}>
+				{title}
+			</div>
 			{children}
 		</div>
 	)
@@ -116,7 +118,7 @@ function HighlighterPanel() {
 	)
 	const swatch = colors.find((c) => c.id === settings.color)?.css
 	return (
-		<Panel title="Highlighter">
+		<Panel title="Highlighter" hint="Shift+D. Hold Option to highlight without pressing.">
 			<Swatches
 				colors={colors}
 				selected={settings.color}
@@ -142,13 +144,12 @@ function HighlighterPanel() {
 			<div className="tool-panel__preview">
 				<div
 					style={{
-						height: Math.min(settings.size, 40),
+						height: Math.min(settings.size, 24),
 						background: swatch,
 						opacity: settings.opacity,
 					}}
 				/>
 			</div>
-			<div className="tool-panel__hint">Shift+D. Hold Option to highlight without pressing.</div>
 		</Panel>
 	)
 }
@@ -156,7 +157,7 @@ function HighlighterPanel() {
 function LaserPanel() {
 	const settings = useValue('laser settings', () => laserSettings.get(), [])
 	return (
-		<Panel title="Laser pointer">
+		<Panel title="Laser pointer" hint="K. Drag to draw a fading trail, or hold Option and glide.">
 			<Swatches
 				colors={LASER_COLORS.map((c) => ({ id: c, css: c, label: c }))}
 				selected={settings.color}
@@ -179,7 +180,6 @@ function LaserPanel() {
 				format={(v) => `${(v / 1000).toFixed(1)}s`}
 				onChange={(trailMs) => laserSettings.update({ trailMs })}
 			/>
-			<div className="tool-panel__hint">K. Drag to draw a fading trail, or hold Option and glide.</div>
 		</Panel>
 	)
 }
@@ -189,7 +189,10 @@ function SpotlightPanel() {
 	const settings = useValue('spotlight settings', () => spotlightSettings.get(), [])
 	const count = useValue('spotlight count', () => getSpotlightTargets(editor).length, [editor])
 	return (
-		<Panel title="Spotlight">
+		<Panel
+			title="Spotlight"
+			hint="I. Click an item to spotlight it, Shift-click to add more, drag to light an area. Esc clears."
+		>
 			<Slider
 				label="Dim"
 				value={settings.dim}
@@ -211,10 +214,6 @@ function SpotlightPanel() {
 			<button className="tool-panel__button" disabled={count === 0} onClick={clearSpotlight}>
 				Clear spotlight
 			</button>
-			<div className="tool-panel__hint">
-				I. Click an item to spotlight it, Shift-click to add more, drag to light an area. Esc
-				clears.
-			</div>
 		</Panel>
 	)
 }

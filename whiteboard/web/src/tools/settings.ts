@@ -18,6 +18,11 @@ export interface LaserSettings {
 	trailMs: number
 }
 
+export interface EraserSettings {
+	/** Diameter of the eraser circle, in screen pixels. */
+	size: number
+}
+
 export interface SpotlightSettings {
 	/** Radius of the follow-the-pointer spotlight, in screen pixels. */
 	radius: number
@@ -58,6 +63,10 @@ export const laserSettings = persisted<LaserSettings>('whiteboard.laser', {
 	color: '#ff2d2d',
 	size: 6,
 	trailMs: 1200,
+})
+
+export const eraserSettings = persisted<EraserSettings>('whiteboard.eraser', {
+	size: 40,
 })
 
 export const spotlightSettings = persisted<SpotlightSettings>('whiteboard.spotlight', {

@@ -154,3 +154,127 @@ body,
 	pointer-events: none;
 	z-index: 1000;
 }
+
+/* Spotlight: a dark layer over the board with holes cut for the lit items. It never takes the
+   pointer, so you can keep drawing or pointing inside a spotlight with other tools. */
+.spotlight-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	z-index: 1;
+}
+
+.spotlight-overlay rect,
+.spotlight-overlay circle {
+	transition: opacity 200ms ease;
+}
+
+.spotlight-overlay__ring {
+	fill: none;
+	stroke: rgba(255, 255, 255, 0.85);
+	stroke-width: 2;
+	filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+.laser-dot {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 50%;
+	pointer-events: none;
+	z-index: 2;
+	border: 2px solid rgba(255, 255, 255, 0.9);
+	box-sizing: border-box;
+}
+
+.tool-panel {
+	width: 188px;
+	padding: 10px 12px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	font-family: var(--tl-font-sans, system-ui, -apple-system, sans-serif);
+	font-size: 12px;
+	color: var(--tl-color-text-1, #1d1d1d);
+}
+
+.tool-panel__title {
+	font-weight: 600;
+	font-size: 13px;
+}
+
+.tool-panel__swatches {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 6px;
+}
+
+.tool-panel__swatch {
+	aspect-ratio: 1;
+	border-radius: 50%;
+	border: 2px solid transparent;
+	cursor: pointer;
+	padding: 0;
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+
+.tool-panel__swatch[data-selected='true'] {
+	border-color: var(--tl-color-text-1, #1d1d1d);
+}
+
+.tool-panel__slider {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.tool-panel__slider input {
+	width: 100%;
+	margin: 0;
+}
+
+.tool-panel__label {
+	display: flex;
+	justify-content: space-between;
+}
+
+.tool-panel__value {
+	color: var(--tl-color-text-3, #888);
+	font-variant-numeric: tabular-nums;
+}
+
+.tool-panel__preview {
+	height: 44px;
+	display: flex;
+	align-items: center;
+	padding: 0 8px;
+	border-radius: 6px;
+	background: var(--tl-color-background, #fff);
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.tool-panel__preview > div {
+	width: 100%;
+	border-radius: 999px;
+}
+
+.tool-panel__button {
+	padding: 6px 8px;
+	border-radius: 6px;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	background: var(--tl-color-low, #f5f5f5);
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}
+
+.tool-panel__button:disabled {
+	opacity: 0.5;
+	cursor: default;
+}
+
+.tool-panel__hint {
+	color: var(--tl-color-text-3, #888);
+	line-height: 1.35;
+}

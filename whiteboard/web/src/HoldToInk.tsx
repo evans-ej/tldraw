@@ -5,6 +5,8 @@ import { TLPointerEventInfo, useEditor } from 'tldraw'
 // so holding this key instead turns plain finger movement into ink.
 export const INK_KEY = 'Alt'
 const INK_POINTER_ID = 9999
+// Tools that Option-gliding drives as they are; from any other tool it inks with the pen.
+const GLIDE_TOOLS = ['draw', 'highlight', 'laser']
 
 export function HoldToInk() {
 	const editor = useEditor()
@@ -41,8 +43,9 @@ export function HoldToInk() {
 		}
 
 		function start() {
-			toolBefore = editor.getCurrentToolId()
-			if (toolBefore !== 'draw') editor.setCurrentTool('draw')
+			const current = editor.getCurrentToolId()
+			toolBefore = GLIDE_TOOLS.includes(current) ? null : current
+			if (toolBefore) editor.setCurrentTool('draw')
 			markId = editor.markHistoryStoppingPoint('hold to ink')
 			dispatchPointer('pointer_down')
 			inking = true
@@ -57,7 +60,7 @@ export function HoldToInk() {
 			// Option is also a modifier (Option+key shortcuts); if another key joins in,
 			// the stroke wasn't meant as ink, so undo it.
 			if (cancel && markId) editor.bailToMark(markId)
-			if (toolBefore && toolBefore !== 'draw') editor.setCurrentTool(toolBefore)
+			if (toolBefore) editor.setCurrentTool(toolBefore)
 			toolBefore = null
 			markId = null
 		}

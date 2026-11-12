@@ -6,16 +6,32 @@ import { HoldToInk } from './HoldToInk'
 import { postToNative } from './nativeBridge'
 import { PageNavigator } from './PageNavigator'
 import { PlayerVideoShapeUtil } from './PlayerVideoShapeUtil'
+import { CanvasOverlays } from './tools/CanvasOverlays'
+import { registerHighlighter } from './tools/highlighter'
+import { LaserPointerTool, registerLaserColor } from './tools/LaserPointerTool'
+import { SpotlightTool } from './tools/SpotlightTool'
+import { SPOTLIGHT_ICON_URL, uiOverrides, WhiteboardToolbar } from './tools/toolbar'
+import { ToolAwareStylePanel } from './tools/ToolPanels'
 
 const shapeUtils = [PlayerVideoShapeUtil]
+const tools = [LaserPointerTool, SpotlightTool]
 
-const components: TLComponents = { TopPanel: PageNavigator }
+const components: TLComponents = {
+	TopPanel: PageNavigator,
+	Toolbar: WhiteboardToolbar,
+	StylePanel: ToolAwareStylePanel,
+	InFrontOfTheCanvas: CanvasOverlays,
+}
 
 // Bundle fonts, icons and translations so the app works offline instead of loading them from a CDN.
 // Keep the URLs as Vite resolved them. tldraw's default formatter only treats http(s) and data:
 // URLs as absolute, so in the app it turned `whiteboard://app/assets/x` into
 // `whiteboard://app/whiteboard://app/assets/x`, and every icon and font failed to load.
-const assetUrls = getAssetUrlsByImport((url) => url)
+const bundledAssetUrls = getAssetUrlsByImport((url) => url)
+const assetUrls = {
+	...bundledAssetUrls,
+	icons: { ...bundledAssetUrls.icons, 'tool-spotlight': SPOTLIGHT_ICON_URL },
+}
 
 // tldraw's default limit is 10 MB, too small for video clips.
 const MAX_ASSET_SIZE = 1024 * 1024 * 1024
@@ -23,7 +39,9 @@ const MAX_ASSET_SIZE = 1024 * 1024 * 1024
 export default function App() {
 	const handleMount = useCallback((editor: Editor) => {
 		editor.setCurrentTool('draw')
+		const cleanups = [registerHighlighter(editor), registerLaserColor(editor)]
 		postToNative({ type: 'ready' })
+		return () => cleanups.forEach((fn) => fn())
 	}, [])
 
 	return (
@@ -32,6 +50,8 @@ export default function App() {
 				persistenceKey="whiteboard"
 				licenseKey={import.meta.env.VITE_TLDRAW_LICENSE_KEY}
 				shapeUtils={shapeUtils}
+				tools={tools}
+				overrides={uiOverrides}
 				components={components}
 				assetUrls={assetUrls}
 				maxAssetSize={MAX_ASSET_SIZE}

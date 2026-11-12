@@ -33,6 +33,7 @@ import {
 	useTools,
 	XBoxToolbarItem,
 } from 'tldraw'
+import { fitVideoToScreen, getVideoToFit } from '../fitVideo'
 
 const SPOTLIGHT_ICON_SVG = `<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="15" cy="15" r="6" stroke="black" stroke-width="2"/>
@@ -55,8 +56,28 @@ export const uiOverrides: TLUiOverrides = {
 		}
 		return tools
 	},
+	actions(editor, actions) {
+		actions['fit-video'] = {
+			id: 'fit-video',
+			label: 'action.fit-video',
+			kbd: 'shift+b',
+			readonlyOk: false,
+			onSelect() {
+				const video = getVideoToFit(editor)
+				if (!video) return
+				editor.markHistoryStoppingPoint('fit video')
+				fitVideoToScreen(editor, video)
+			},
+		}
+		return actions
+	},
 	translations: {
-		en: { 'tool.spotlight': 'Spotlight', 'tool.highlight': 'Highlighter', 'tool.laser': 'Laser pointer' },
+		en: {
+			'action.fit-video': 'Fit video to screen',
+			'tool.spotlight': 'Spotlight',
+			'tool.highlight': 'Highlighter',
+			'tool.laser': 'Laser pointer',
+		},
 	},
 }
 

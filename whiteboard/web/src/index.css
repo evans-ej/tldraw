@@ -28,7 +28,10 @@ body,
 	align-items: center;
 	overflow: hidden;
 	white-space: nowrap;
-	font-family: system-ui, -apple-system, sans-serif;
+	font-family:
+		system-ui,
+		-apple-system,
+		sans-serif;
 	color: #ddd;
 	background: #222;
 }
@@ -60,7 +63,10 @@ body,
 	align-items: center;
 	gap: 8px;
 	padding: 0 10px;
-	font: 13px/1 system-ui, -apple-system, sans-serif;
+	font:
+		13px/1 system-ui,
+		-apple-system,
+		sans-serif;
 	color: white;
 }
 
@@ -110,7 +116,10 @@ body,
 	background: var(--tl-color-panel, white);
 	box-shadow: var(--tl-shadow-2, 0 2px 8px rgba(0, 0, 0, 0.15));
 	pointer-events: all;
-	font: 15px/1 system-ui, -apple-system, sans-serif;
+	font:
+		15px/1 system-ui,
+		-apple-system,
+		sans-serif;
 	color: var(--tl-color-text, #111);
 }
 
@@ -148,7 +157,10 @@ body,
 	transform: translateX(-50%);
 	padding: 6px 10px;
 	border-radius: 6px;
-	font: 12px/1.2 system-ui, -apple-system, sans-serif;
+	font:
+		12px/1.2 system-ui,
+		-apple-system,
+		sans-serif;
 	color: white;
 	background: rgba(0, 0, 0, 0.7);
 	pointer-events: none;
@@ -189,11 +201,12 @@ body,
 }
 
 .tool-panel {
-	width: 188px;
-	padding: 10px 12px 12px;
+	width: auto;
+	padding: 4px 12px;
 	display: flex;
-	flex-direction: column;
-	gap: 10px;
+	flex-direction: row;
+	align-items: center;
+	gap: 14px;
 	font-family: var(--tl-font-sans, system-ui, -apple-system, sans-serif);
 	font-size: 12px;
 	color: var(--tl-color-text-1, #1d1d1d);
@@ -202,16 +215,18 @@ body,
 .tool-panel__title {
 	font-weight: 600;
 	font-size: 13px;
+	white-space: nowrap;
+	cursor: help;
 }
 
 .tool-panel__swatches {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
+	display: flex;
 	gap: 6px;
 }
 
 .tool-panel__swatch {
-	aspect-ratio: 1;
+	width: 22px;
+	height: 22px;
 	border-radius: 50%;
 	border: 2px solid transparent;
 	cursor: pointer;
@@ -224,9 +239,10 @@ body,
 }
 
 .tool-panel__slider {
+	width: 110px;
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 2px;
 }
 
 .tool-panel__slider input {
@@ -237,6 +253,7 @@ body,
 .tool-panel__label {
 	display: flex;
 	justify-content: space-between;
+	white-space: nowrap;
 }
 
 .tool-panel__value {
@@ -245,10 +262,11 @@ body,
 }
 
 .tool-panel__preview {
-	height: 44px;
+	width: 64px;
+	height: 32px;
 	display: flex;
 	align-items: center;
-	padding: 0 8px;
+	padding: 0 6px;
 	border-radius: 6px;
 	background: var(--tl-color-background, #fff);
 	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -266,6 +284,7 @@ body,
 	background: var(--tl-color-low, #f5f5f5);
 	color: inherit;
 	font: inherit;
+	white-space: nowrap;
 	cursor: pointer;
 }
 
@@ -274,7 +293,78 @@ body,
 	cursor: default;
 }
 
-.tool-panel__hint {
-	color: var(--tl-color-text-3, #888);
-	line-height: 1.35;
+/* Page buttons sit right after the menu, so they don't jump around when the style strip on the
+   right changes width with the tool. */
+.tlui-layout__top__center {
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding-left: 8px;
+}
+
+/* Style strip: tldraw's style panel and the tool panels laid out as one horizontal row along the
+   top edge, so they sit in the top bar instead of hanging down over the board (and over a video
+   while screen recording). Keep it one button tall: fitVideo.ts measures it. */
+.tlui-style-panel.tlui-style-panel__wrapper {
+	width: auto;
+	max-width: calc(100vw - 16px);
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	align-items: center;
+	overflow: visible;
+}
+
+.tlui-style-panel__wrapper .tlui-style-panel__section {
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 0 !important;
+	border-bottom: none !important;
+	padding: 0 2px;
+}
+
+.tlui-style-panel__wrapper
+	.tlui-style-panel__section:not(:empty)
+	~ .tlui-style-panel__section:not(:empty) {
+	border-left: 1px solid var(--tl-color-divider);
+}
+
+.tlui-style-panel__wrapper .tlui-grid {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.tlui-style-panel__wrapper .tlui-toolbar-toggle-group-item {
+	width: 32px;
+	min-width: 32px;
+}
+
+.tlui-style-panel__wrapper .tlui-slider__container {
+	width: 96px;
+	flex: none;
+	padding: 0 8px;
+}
+
+.tlui-style-panel__wrapper .tlui-style-panel__dropdown-picker,
+.tlui-style-panel__wrapper .tlui-style-panel__double-select-picker {
+	flex: none;
+}
+
+.tlui-style-panel__wrapper .tlui-style-panel__section .tlui-toolbar:has(.tlui-toolbar) {
+	flex-wrap: nowrap;
+}
+
+.tlui-style-panel__wrapper .tlui-style-panel__section__common {
+	display: flex;
+	align-items: center;
+	margin-bottom: 0 !important;
+	border-bottom: none !important;
+}
+
+/* tldraw's alt-text button for a selected video. A fitted video's top edge sits right under the
+   top bar, so this would pop up on top of the page buttons. */
+.tlui-video__toolbar {
+	display: none;
 }

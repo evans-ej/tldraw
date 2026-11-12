@@ -2,6 +2,7 @@ import { getAssetUrlsByImport } from '@tldraw/assets/imports.vite'
 import { useCallback } from 'react'
 import { Editor, TLComponents, Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
+import { VideoAutoFit } from './fitVideo'
 import { HoldToInk } from './HoldToInk'
 import { postToNative } from './nativeBridge'
 import { PageNavigator } from './PageNavigator'
@@ -58,6 +59,7 @@ export default function App() {
 				onMount={handleMount}
 			>
 				<HoldToInk />
+				<VideoAutoFit maxAssetSize={MAX_ASSET_SIZE} />
 			</Tldraw>
 		</div>
 	)
